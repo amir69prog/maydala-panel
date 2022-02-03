@@ -11,10 +11,7 @@
 
 """
 
-from turtle import title
-from models import *
-from session import session
-from datetime import datetime
+from core.models import *
 
 def add_person(session, *args, **kwargs):
     """Inserting Person object
@@ -66,4 +63,18 @@ def append_color_to_bookmark(session, bookmark_id, color_id):
     bookmark = session.query(Bookmark).filter(Bookmark.id == bookmark_id).first()
     color = session.query(Color).filter(Color.id == color_id).first()
     bookmark.colors.append(color)
+    session.commit()
+
+def edit_person(session, person_id, *args, **kwargs):
+    """Edit person"""
+    person = session.query(Person).filter(Person.person_id == person_id).first()
+    person.first_name = kwargs['first_name']
+    person.last_name = kwargs['last_name']
+    person.phone_number = kwargs['phone_number']
+    session.commit() 
+
+def delete_person(session, person_id):
+    """Delete person"""
+    person = session.query(Person).filter(Person.person_id == person_id).first()
+    session.delete(person)
     session.commit()

@@ -99,7 +99,7 @@ QPushButton:hover {
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="carts_btn">
+        <widget class="QPushButton" name="orders_btn">
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>

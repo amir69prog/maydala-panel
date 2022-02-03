@@ -4,8 +4,8 @@
 
 from typing import List
 
-from models import *
-from session import session
+from core.models import *
+from core.session import session
 
 __all__ = [
     'query_all_person',
