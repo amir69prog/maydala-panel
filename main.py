@@ -131,8 +131,9 @@ class PersonWidget(QWidget):
             self.edit_person_btn.setEnabled(True)
             self.save_person_btn.setEnabled(False)
             self.cancel_save_btn.setEnabled(False)
+            person_page.update_person_table()
 
-        
+
     def delete_person(self):
         """ Delete Person """
         utils.delete_person(session, self.person.person_id)
@@ -196,7 +197,7 @@ class PersonPage(QWidget):
     
     def detail_person_page(self, item):
         """ Go to detail person page """
-        person_id = self.person_table.itemAt(item.row(), 0).text()
+        person_id = self.person_table.item(item.row(), 0).text()
         person = query.query_person_by_id(session, person_id)
         person_widget = PersonWidget(person)
         stacked_layout.addWidget(person_widget)
