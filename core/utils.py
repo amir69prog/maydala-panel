@@ -13,6 +13,8 @@
 
 from core.models import *
 
+### Add ###
+
 def add_person(session, *args, **kwargs):
     """Inserting Person object
        this function return the person that has been created"""
@@ -65,6 +67,11 @@ def append_color_to_bookmark(session, bookmark_id, color_id):
     bookmark.colors.append(color)
     session.commit()
 
+### End Add ###
+
+
+### Edit ###
+
 def edit_person(session, person_id, *args, **kwargs):
     """Edit person"""
     person = session.query(Person).filter(Person.person_id == person_id).first()
@@ -73,8 +80,40 @@ def edit_person(session, person_id, *args, **kwargs):
     person.phone_number = kwargs['phone_number']
     session.commit() 
 
+def edit_form(session, form_id, *args, **kwargs):
+    """Edit form"""
+    form = session.query(Form).filter(Form.id == form_id).first()
+    form.title = kwargs['title']
+    form.base_price = kwargs['base_price']
+    session.commit()
+
+def edit_color(session, color_id, *args, **kwargs):
+    """Edit color"""
+    color = session.query(Color).filter(Color.id == color_id).first()
+    color.color = kwargs['color']
+    session.commit()
+
+### End Edit ###
+
+
+### Delete ###
+
 def delete_person(session, person_id):
     """Delete person"""
     person = session.query(Person).filter(Person.person_id == person_id).first()
     session.delete(person)
     session.commit()
+
+def delete_form(session, form_id):
+    """Delete form"""
+    form = session.query(Form).filter(Form.id == form_id).first()
+    session.delete(form)
+    session.commit()
+
+def delete_color(session, color_id):
+    """Delete color"""
+    color = session.query(Color).filter(Color.id == color_id).first()
+    session.delete(color)
+    session.commit()
+
+### End Delete ###
