@@ -156,7 +156,7 @@
      <rect>
       <x>9</x>
       <y>30</y>
-      <width>451</width>
+      <width>479</width>
       <height>284</height>
      </rect>
     </property>
@@ -203,6 +203,19 @@
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>person_input</tabstop>
+  <tabstop>form_input</tabstop>
+  <tabstop>colors_input</tabstop>
+  <tabstop>count_input</tabstop>
+  <tabstop>final_price_input</tabstop>
+  <tabstop>is_paid_input</tabstop>
+  <tabstop>adderess_input</tabstop>
+  <tabstop>zip_code_input</tabstop>
+  <tabstop>created_date_input</tabstop>
+  <tabstop>add_btn</tabstop>
+  <tabstop>cancel_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

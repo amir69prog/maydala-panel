@@ -266,6 +266,18 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>bookmark_list</tabstop>
+  <tabstop>add_bookmark_btn</tabstop>
+  <tabstop>delete_bookmark_btn</tabstop>
+  <tabstop>cancel_bookmark_btn</tabstop>
+  <tabstop>tableWidget_2</tabstop>
+  <tabstop>add_board_btn</tabstop>
+  <tabstop>delete_board_btn</tabstop>
+  <tabstop>cancel_board_btn</tabstop>
+  <tabstop>home_btn</tabstop>
+  <tabstop>close_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

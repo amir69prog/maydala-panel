@@ -87,6 +87,12 @@
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>title_input</tabstop>
+  <tabstop>base_price_input</tabstop>
+  <tabstop>edit_btn</tabstop>
+  <tabstop>cancel_edit_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

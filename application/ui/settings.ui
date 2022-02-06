@@ -333,6 +333,23 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>title_input</tabstop>
+  <tabstop>base_price_input</tabstop>
+  <tabstop>add_form_btn</tabstop>
+  <tabstop>edit_form_btn</tabstop>
+  <tabstop>delete_form_btn</tabstop>
+  <tabstop>cancel_form_btn</tabstop>
+  <tabstop>form_table</tabstop>
+  <tabstop>color_input</tabstop>
+  <tabstop>add_color_btn</tabstop>
+  <tabstop>edit_color_btn</tabstop>
+  <tabstop>delete_color_btn</tabstop>
+  <tabstop>cancel_color_btn</tabstop>
+  <tabstop>color_table</tabstop>
+  <tabstop>home_btn</tabstop>
+  <tabstop>close_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

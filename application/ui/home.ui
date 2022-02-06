@@ -149,6 +149,11 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>orders_btn</tabstop>
+  <tabstop>person_btn</tabstop>
+  <tabstop>settings_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

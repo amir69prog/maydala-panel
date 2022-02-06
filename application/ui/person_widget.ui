@@ -170,6 +170,18 @@
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>first_name_input</tabstop>
+  <tabstop>last_name_input</tabstop>
+  <tabstop>phone_number_input</tabstop>
+  <tabstop>edit_person_btn</tabstop>
+  <tabstop>save_person_btn</tabstop>
+  <tabstop>delete_person_btn</tabstop>
+  <tabstop>cancel_save_btn</tabstop>
+  <tabstop>close_btn</tabstop>
+  <tabstop>back_btn</tabstop>
+  <tabstop>home_btn</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
