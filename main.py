@@ -1,10 +1,11 @@
+from datetime import datetime
 import sys
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
-from PyQt5.QtWidgets import QWidget, QApplication, QStackedLayout, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QApplication, QStackedLayout, QTableWidgetItem, QListWidgetItem
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QDate
 
 from core.models import *
 from core import query 
@@ -22,34 +23,21 @@ def back_to_pervious_page(pervious_page_index: int):
     """ Back to previous page """
     stacked_layout.setCurrentIndex(pervious_page_index)
 
-def go_to_home_page():
-    """ Go to Home Page """
-    stacked_layout.setCurrentWidget(home_page)
-
-def go_to_settings_page():
-    """ Go to Settings Page """
-    stacked_layout.setCurrentWidget(settings_page)
-
 def close_app():
     """ Close App """
     sys.exit(app.exec_())
 
-def go_to_person_page():
-    """ Go to Person Page """
-    stacked_layout.setCurrentWidget(person_page)
+def go_to_page(page: QWidget):
+    """ Go to specefic page """
+    stacked_layout.setCurrentWidget(page)
 
-def go_to_order_page():
-    """ Go to Order Page """
-    # stacked_layout.setCurrentIndex(2)
-
-def go_to_product_page():
-    """ Go to Prodcut Page """
-    # stacked_layout.setCurrentIndex(3)
-
-def validete_form(form_data):
+def validete_form(form_data, non_required: List = None):
     """ Validate Form """
     for key, value in form_data.items():
-        if len(str(value)) < 3:
+        if non_required:
+            if key in non_required:
+                continue
+        if not value:
             return False
     return True
 
@@ -66,10 +54,9 @@ class HomePage(QWidget):
         self.settings()
         
         # Signals
-        self.person_btn.clicked.connect(go_to_person_page)
-        self.orders_btn.clicked.connect(go_to_order_page)
-        self.settings_btn.clicked.connect(go_to_settings_page)
-        self.products_btn.clicked.connect(go_to_product_page)
+        self.person_btn.clicked.connect(lambda :go_to_page(person_page))
+        self.orders_btn.clicked.connect(lambda :go_to_page(order_page))
+        self.settings_btn.clicked.connect(lambda :go_to_page(settings_page))
 
     def settings(self):
         """ Settings """
@@ -88,7 +75,7 @@ class PersonWidget(QWidget):
         self.settings()
 
         # Signals
-        self.home_btn.clicked.connect(go_to_home_page)
+        self.home_btn.clicked.connect(lambda :go_to_page(home_page))
         self.close_btn.clicked.connect(close_app)
         self.save_person_btn.clicked.connect(self.edit_person)
         self.edit_person_btn.clicked.connect(self.goin_to_edit_person)
@@ -111,7 +98,6 @@ class PersonWidget(QWidget):
         self.phone_number_input.setEnabled(False)
         self.save_person_btn.setEnabled(False)
         self.cancel_save_btn.setEnabled(False)
-
 
     def goin_to_edit_person(self):
         """ Go to Edit Person Page """
@@ -139,13 +125,14 @@ class PersonWidget(QWidget):
             self.save_person_btn.setEnabled(False)
             self.cancel_save_btn.setEnabled(False)
             person_page.update_person_table()
-
+            add_bookmark_page.update_person_combo()
 
     def delete_person(self):
         """ Delete Person """
         utils.delete_person(session, self.person.person_id)
         person_page.update_person_table()
-        go_to_person_page()
+        add_bookmark_page.update_person_combo()
+        go_to_page(person_page)
 
 
 class PersonPage(QWidget):
@@ -157,7 +144,7 @@ class PersonPage(QWidget):
         self.settings()
 
         # Signals
-        self.home_btn.clicked.connect(go_to_home_page)
+        self.home_btn.clicked.connect(lambda :go_to_page(home_page))
         self.close_btn.clicked.connect(close_app)
         self.add_person_btn.clicked.connect(self.add_person)
         self.person_table.itemDoubleClicked.connect(self.detail_person_page)
@@ -201,6 +188,7 @@ class PersonPage(QWidget):
             self.last_name_input.clear()
             self.phone_number_input.clear()
             self.update_person_table()
+            add_bookmark_page.update_person_combo()
     
     def detail_person_page(self, item):
         """ Go to detail person page """
@@ -222,7 +210,7 @@ class FormWidget(QWidget):
 
         # Signals
         self.edit_btn.clicked.connect(self.edit_form)
-        self.cancel_edit_btn.clicked.connect(self.cancel_edit)
+        self.cancel_edit_btn.clicked.connect(lambda :go_to_page(settings_page))
 
     def settings(self):
         """ Settings """
@@ -246,11 +234,8 @@ class FormWidget(QWidget):
         if is_valid:
             utils.edit_form(session, self.form.id, **data)
             settings_page.update_form_table()
-            go_to_settings_page()
-    
-    def cancel_edit(self):
-        """ Cancel edit """
-        go_to_settings_page()
+            add_bookmark_page.update_form_combo()
+            go_to_page(settings_page)
 
 
 class ColorWidget(QWidget):
@@ -264,7 +249,7 @@ class ColorWidget(QWidget):
 
         # Signals
         self.edit_btn.clicked.connect(self.edit_color)
-        self.cancel_edit_btn.clicked.connect(self.cancel_edit)
+        self.cancel_edit_btn.clicked.connect(lambda: go_to_page(settings_page))
     
     def settings(self):
         """ Settings """
@@ -285,11 +270,8 @@ class ColorWidget(QWidget):
         if is_valid:
             utils.edit_color(session, self.color.id, **data)
             settings_page.update_color_table()
-            go_to_settings_page()
-        
-    def cancel_edit(self):
-        """ Cancel edit """
-        go_to_settings_page()
+            add_bookmark_page.update_color_combo()
+            go_to_page(settings_page)
 
 
 class SettingsPage(QWidget):
@@ -302,6 +284,8 @@ class SettingsPage(QWidget):
         self.settings()
 
         # Signals
+        self.home_btn.clicked.connect(lambda :go_to_page(home_page))
+        self.close_btn.clicked.connect(close_app)
         self.add_form_btn.clicked.connect(self.add_form)
         self.add_color_btn.clicked.connect(self.add_color)
         self.form_table.itemClicked.connect(self.going_to_delete_or_edit_form)
@@ -360,6 +344,7 @@ class SettingsPage(QWidget):
             self.title_input.clear()
             self.base_price_input.clear()
             self.update_form_table()
+            add_bookmark_page.update_form_combo()
 
     def going_to_delete_or_edit_form(self):
         """ Going to Delete a form """
@@ -372,6 +357,7 @@ class SettingsPage(QWidget):
         form_id = self.form_table.item(self.form_table.currentRow(), 0).text()
         utils.delete_form(session, form_id)
         self.init_form_ui()
+        add_bookmark_page.update_form_combo()
     
     def edit_form_widget(self):
         """ Edit form widget """
@@ -405,7 +391,8 @@ class SettingsPage(QWidget):
             utils.add_color(session, **data)
             self.color_input.clear()
             self.update_color_table() 
-    
+            add_bookmark_page.update_color_combo()
+
     def going_to_delete_or_edit_color(self):
         """ Going to Delete a color """
         self.delete_color_btn.setEnabled(True)
@@ -417,7 +404,8 @@ class SettingsPage(QWidget):
         color_id = self.color_table.item(self.color_table.currentRow(), 0).text()
         utils.delete_color(session, color_id)
         self.init_color_ui()
-    
+        add_bookmark_page.update_color_combo()
+
     def edit_color_widget(self):
         """ Edit color widget """
         color_id = self.color_table.item(self.color_table.currentRow(), 0).text()
@@ -425,6 +413,291 @@ class SettingsPage(QWidget):
         color_widget = ColorWidget(color)
         stacked_layout.addWidget(color_widget)
         stacked_layout.setCurrentWidget(color_widget)
+
+
+class OrderPage(QWidget):
+
+    def __init__(self) -> None:
+        super().__init__()
+        loadUi(APP_DIR / 'ui/order.ui', self)
+        self.settings()
+        self.init_bookmark_ui()
+        self.init_board_ui()
+
+        # Signals
+        self.close_btn.clicked.connect(close_app)
+        self.home_btn.clicked.connect(lambda :go_to_page(home_page))
+        self.add_bookmark_btn.clicked.connect(lambda :go_to_page(add_bookmark_page))
+        self.delete_bookmark_btn.clicked.connect(self.delete_bookmark)
+        self.cancel_bookmark_btn.clicked.connect(self.init_bookmark_ui)
+        self.bookmark_list.itemClicked.connect(self.going_to_delete_bookmark)
+        self.bookmark_list.itemDoubleClicked.connect(self.edit_bookmark_widget)
+    
+    def settings(self):
+        """ Settings """
+        self.setFixedSize(1000,600)
+        self.setWindowTitle('Order')
+
+    def init_bookmark_ui(self):
+        """ Initialize Bookmark UI """ 
+        self.update_bookmark_list()
+        self.delete_bookmark_btn.setEnabled(False)
+        self.cancel_bookmark_btn.setEnabled(False)
+    
+    def update_bookmark_list(self):
+        """ Update bookmark list """
+        self.bookmark_list.setRowCount(0)
+        bookmarks = query.query_all_bookmark(session)
+        row_count = self.bookmark_list.rowCount()
+        for bookmark in bookmarks:
+            self.bookmark_list.insertRow(row_count)
+            item_id = QTableWidgetItem(str(bookmark.id))
+            item_id.setFlags(Qt.ItemIsEnabled)
+            self.bookmark_list.setItem(row_count, 0, item_id)
+            self.bookmark_list.setItem(row_count, 1, QTableWidgetItem(utils.get_full_name_person(bookmark.person)))
+            self.bookmark_list.setItem(row_count, 2, QTableWidgetItem(str(bookmark.count)))
+            self.bookmark_list.setItem(row_count, 3, QTableWidgetItem(bookmark.form.title))
+            self.bookmark_list.setItem(row_count, 4, QTableWidgetItem(utils.get_colors(bookmark.colors)))
+            self.bookmark_list.setItem(row_count, 5, QTableWidgetItem(str(bookmark.final_price)))
+            self.bookmark_list.setItem(row_count, 6, QTableWidgetItem(bookmark.zip_code))
+            self.bookmark_list.setItem(row_count, 7, QTableWidgetItem(utils.get_date(bookmark.delivery_date)))
+            self.bookmark_list.setItem(row_count, 8, QTableWidgetItem(utils.get_date(bookmark.created_date)))
+            self.bookmark_list.setItem(row_count, 9, QTableWidgetItem(utils.get_date(bookmark.date_paid)))
+            self.bookmark_list.setItem(row_count, 10, QTableWidgetItem(utils.get_status_payment(bookmark.is_paid)))
+            row_count += 1
+
+    def delete_bookmark(self):
+        """ Deleting bookmark """
+        bookmark_id = self.bookmark_list.item(self.bookmark_list.currentRow(), 0).text()
+        utils.delete_bookmark(session, bookmark_id)
+        self.init_bookmark_ui()
+    
+    def going_to_delete_bookmark(self):
+        """ Going to delete bookmark """
+        self.delete_bookmark_btn.setEnabled(True)        
+        self.cancel_bookmark_btn.setEnabled(True)
+    
+    def edit_bookmark_widget(self):
+        """ Edit bookmark widget """
+        bookmark_id = self.bookmark_list.item(self.bookmark_list.currentRow(), 0).text()
+        bookmark = query.query_bookmark_by_id(session, bookmark_id)
+        bookmark_widget = BookmarkWidget(bookmark)
+        stacked_layout.addWidget(bookmark_widget)
+        stacked_layout.setCurrentWidget(bookmark_widget)
+
+    def init_board_ui(self):
+        """ Initialize Board UI """ 
+
+
+class AddBookmarkPage(QWidget):
+
+    def __init__(self) -> None:
+        super().__init__()
+        loadUi(APP_DIR / 'ui/add_bookmark.ui', self)
+        self.settings()
+        self.init_ui()
+
+        # Signals
+        self.add_btn.clicked.connect(self.add_bookmark)
+        self.cancel_btn.clicked.connect(lambda :go_to_page(order_page))
+        self.form_input.currentIndexChanged.connect(self.calculate_final_price)
+        self.count_input.valueChanged.connect(self.calculate_final_price)
+    
+    def settings(self):
+        """ Settings """
+        self.setFixedSize(800,500)
+        self.setWindowTitle('Add Bookmark')
+    
+    def init_ui(self):
+        """ Initialize UI """
+        self.update_person_combo()
+        self.update_form_combo()
+        self.update_color_combo()
+        self.calculate_final_price()
+        self.set_current_date()
+
+    def update_person_combo(self):
+        """ Update person combo """
+        self.person_input.clear()
+        perons = query.query_all_person(session)
+        for person in perons:
+            self.person_input.addItem(utils.get_full_name_person(person), userData=person.person_id)
+
+    def update_form_combo(self):
+        """ Update form combo """
+        self.form_input.clear()
+        forms = query.query_all_form(session)
+        for form in forms:
+            self.form_input.addItem(form.title, userData=form.id)
+
+    def update_color_combo(self):
+        """ Update color combo """
+        self.colors_input.clear()
+        colors = query.query_all_color(session)
+        for color in colors:
+            item = QListWidgetItem(color.color)
+            item.setData(Qt.UserRole, color)
+            self.colors_input.addItem(item)
+
+    def calculate_final_price(self, value=None):
+        """ Calculate final price """
+        form_id = self.form_input.currentData()
+        count = self.count_input.value()
+        final_price = utils.calculate_final_price_bookmark(session, form_id, count)
+        self.final_price_input.setValue(final_price)
+    
+    def set_current_date(self):
+        """ Set current date """
+        date = QDate.currentDate()
+        self.created_date_input.setSelectedDate(date)
+
+    def add_bookmark(self):
+        """ Add a new bookmark """
+        person_id = self.person_input.currentData()
+        form_id = self.form_input.currentData()
+        colors = self.colors_input.selectedItems()
+        colors = [color.data(Qt.UserRole) for color in colors]
+        count = self.count_input.value()
+        final_price = 0
+        final_price = self.final_price_input.value()
+        is_paid = self.is_paid_input.isChecked() 
+        created_date = self.created_date_input.selectedDate().toPyDate()
+        adderess = self.adderess_input.toPlainText()
+        zip_code = self.zip_code_input.text()
+        data = {
+            'person_id': person_id,
+            'form_id': form_id,
+            'colors': colors,
+            'count': count,
+            'final_price':final_price,
+            'is_paid': is_paid,
+            'created_date': created_date,
+            'zip_code': zip_code.strip(),
+            'adderess': adderess.strip(),
+            'date_paid': None,
+            'delivery_date': None,
+        }
+        is_valid = validete_form(data, non_required=['is_paid', 'date_paid', 'delivery_date'])
+        if is_valid:
+            utils.add_bookmark(session, **data)
+            self.person_input.setCurrentIndex(0)
+            self.form_input.setCurrentIndex(0)
+            self.colors_input.clearSelection()
+            self.count_input.setValue(1)
+            self.final_price_input.setValue(0.0)
+            self.is_paid_input.setChecked(False)
+            self.set_current_date()
+            self.adderess_input.clear()
+            self.zip_code_input.clear()
+            order_page.update_bookmark_list()
+            go_to_page(order_page)
+
+
+class BookmarkWidget(QWidget):
+
+    def __init__(self, bookmark: Bookmark) -> None:
+        super().__init__()
+        loadUi(APP_DIR / 'ui/edit_bookmark.ui', self)
+        self.bookmark = bookmark
+        self.settings()
+        self.init_ui()
+
+        # Signals
+        self.edit_btn.clicked.connect(self.edit_bookmark)
+        self.cancel_btn.clicked.connect(lambda :go_to_page(order_page))
+        self.form_input.currentIndexChanged.connect(self.calculate_final_price)
+        self.count_input.valueChanged.connect(self.calculate_final_price)
+    
+    def settings(self):
+        """ Settings """
+        self.setFixedSize(800,500)
+        self.setWindowTitle('Edit Bookmark')
+    
+    def init_ui(self):
+        """ Initialize UI """
+        self.update_person_combo()
+        self.update_form_combo()
+        self.update_color_combo()
+        # Set the current values
+        self.person_input.setCurrentIndex(self.person_input.findData(self.bookmark.person_id))
+        self.form_input.setCurrentIndex(self.form_input.findData(self.bookmark.form_id))
+        
+        # Set the colors
+        for color in self.bookmark.colors:
+            color_item = self.colors_input.findItems(color.color, Qt.MatchExactly)
+            color_item[0].setSelected(True)
+        
+        self.count_input.setValue(self.bookmark.count)
+        self.calculate_final_price() # set the final price
+        self.is_paid_input.setChecked(self.bookmark.is_paid)
+        self.adderess_input.setPlainText(self.bookmark.adderess)
+        self.zip_code_input.setText(self.bookmark.zip_code)
+        self.created_date_input.setSelectedDate(self.bookmark.created_date)
+        self.date_paid_input.setDate(self.bookmark.date_paid or QDate())
+        self.delivery_date_input.setDate(self.bookmark.delivery_date or QDate())
+
+    def calculate_final_price(self, value=None):
+        """ Calculate final price """
+        form_id = self.form_input.currentData()
+        count = self.count_input.value()
+        final_price = utils.calculate_final_price_bookmark(session, form_id, count)
+        self.final_price_input.setValue(final_price)
+    
+    def update_person_combo(self):
+        """ Update person combo """
+        self.person_input.clear()
+        perons = query.query_all_person(session)
+        for person in perons:
+            self.person_input.addItem(utils.get_full_name_person(person), userData=person.person_id)
+
+    def update_form_combo(self):
+        """ Update form combo """
+        self.form_input.clear()
+        forms = query.query_all_form(session)
+        for form in forms:
+            self.form_input.addItem(form.title, userData=form.id)
+
+    def update_color_combo(self):
+        """ Update color combo """
+        self.colors_input.clear()
+        colors = query.query_all_color(session)
+        for color in colors:
+            item = QListWidgetItem(color.color)
+            item.setData(Qt.UserRole, color)
+            self.colors_input.addItem(item)
+
+    def edit_bookmark(self):
+        """ Edit bookmark """
+        person_id = self.person_input.currentData()
+        form_id = self.form_input.currentData()
+        colors = self.colors_input.selectedItems()
+        colors = [color.data(Qt.UserRole) for color in colors]
+        count = self.count_input.value()
+        final_price = 0
+        final_price = self.final_price_input.value()
+        is_paid = self.is_paid_input.isChecked() 
+        created_date = self.created_date_input.selectedDate().toPyDate()
+        date_paid = self.date_paid_input.date().toPyDate()
+        delivery_date = self.delivery_date_input.date().toPyDate()
+        adderess = self.adderess_input.toPlainText()
+        zip_code = self.zip_code_input.text()
+        data = {
+            'person_id': person_id,
+            'form_id': form_id,
+            'colors': colors,
+            'count': count,
+            'final_price':final_price,
+            'is_paid': is_paid,
+            'created_date': created_date,
+            'zip_code': zip_code.strip(),
+            'adderess': adderess.strip(),
+            'date_paid': date_paid,
+            'delivery_date': delivery_date,
+        }
+        is_valid = validete_form(data, non_required=['is_paid'])
+        if is_valid:
+            utils.edit_bookmark(session, self.bookmark.id, **data)
+            order_page.update_bookmark_list()
 
 
 ### End Pages ###
@@ -438,11 +711,15 @@ if __name__ == '__main__':
     home_page = HomePage()
     person_page = PersonPage()
     settings_page = SettingsPage()
-    
+    order_page = OrderPage()
+    add_bookmark_page = AddBookmarkPage()
+
     stacked_layout = QStackedLayout()
     stacked_layout.addWidget(home_page)
     stacked_layout.addWidget(person_page)
     stacked_layout.addWidget(settings_page)
+    stacked_layout.addWidget(order_page)
+    stacked_layout.addWidget(add_bookmark_page)
 
     app.exec()
 

@@ -13,53 +13,49 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
      <x>490</x>
-     <y>20</y>
+     <y>30</y>
      <width>291</width>
-     <height>81</height>
+     <height>71</height>
     </rect>
    </property>
    <property name="title">
-    <string>Actions</string>
+    <string/>
    </property>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
+      <y>20</y>
       <width>271</width>
       <height>41</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="delete_person_btn">
-       <property name="text">
-        <string>Delete</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="home_btn">
        <property name="text">
-        <string>Home</string>
+        <string>صفحه اصلی</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="back_btn">
        <property name="text">
-        <string>Back</string>
+        <string>برگشت</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="close_btn">
        <property name="text">
-        <string>Close</string>
+        <string>خروج</string>
        </property>
       </widget>
      </item>
@@ -72,11 +68,11 @@
      <x>20</x>
      <y>20</y>
      <width>451</width>
-     <height>161</height>
+     <height>211</height>
     </rect>
    </property>
    <property name="title">
-    <string>Add Persons</string>
+    <string>ویرایش مشتری</string>
    </property>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
@@ -91,7 +87,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>First Name</string>
+        <string>نام</string>
        </property>
       </widget>
      </item>
@@ -105,7 +101,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Last Name</string>
+        <string>نام خانوادگی</string>
        </property>
       </widget>
      </item>
@@ -119,7 +115,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Phone Number</string>
+        <string>شماره همراه</string>
        </property>
       </widget>
      </item>
@@ -132,44 +128,45 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="save_person_btn">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>130</y>
-      <width>80</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Save</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="edit_person_btn">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>130</y>
-      <width>80</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Edit</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="cancel_save_btn">
+   <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>130</y>
-      <width>80</width>
-      <height>23</height>
+      <y>129</y>
+      <width>221</width>
+      <height>71</height>
      </rect>
     </property>
-    <property name="text">
-     <string>cancel</string>
-    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="1">
+      <widget class="QPushButton" name="cancel_save_btn">
+       <property name="text">
+        <string>لغو</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="save_person_btn">
+       <property name="text">
+        <string>ذخیره</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="edit_person_btn">
+       <property name="text">
+        <string>ویرایش کردن</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="delete_person_btn">
+       <property name="text">
+        <string>حذف</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>

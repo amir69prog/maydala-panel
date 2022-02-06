@@ -24,7 +24,7 @@ class Form(Base):
     id = Column(Integer, Sequence('form_id_seq'), primary_key=True)
     title = Column(String(100))
     base_price = Column(Float)
-    bookmarks = relationship('Bookmark', backref='bookmark')
+    bookmarks = relationship('Bookmark')
 
     def __repr__(self):
         return '<Form(id={}, title={}, base_price={})>'.format(self.id, self.title, self.base_price)
@@ -67,7 +67,8 @@ class Bookmark(Base):
     final_price = Column(Float)
     created_date = Column(DateTime)
     delivery_date = Column(DateTime, nullable=True)
-    form = Column(Integer, ForeignKey('form.id'))
+    form_id = Column(Integer, ForeignKey('form.id'))
+    form = relationship('Form', overlaps="bookmarks")
     colors = relationship('Color', secondary=color_bookmark)
 
     def __repr__(self) -> str:

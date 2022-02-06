@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>781</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>اضافه کردن بوک مارک</string>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>30</y>
+      <width>301</width>
+      <height>441</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="horizontalSpacing">
+      <number>6</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>36</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>مشتری</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="person_input"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>فرم</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="form_input"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>رنگ ها</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QListWidget" name="colors_input">
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>تعداد</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="count_input">
+       <property name="value">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>قیمت نهایی</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QDoubleSpinBox" name="final_price_input">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="maximum">
+        <double>100000000.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>وضعیت پرداخت</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QCheckBox" name="is_paid_input">
+       <property name="text">
+        <string>پرداخت شده</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>430</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="add_btn">
+       <property name="text">
+        <string>اضافه کردن</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel_btn">
+       <property name="text">
+        <string>لغو</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="formLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>30</y>
+      <width>451</width>
+      <height>284</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>آدرس</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QTextEdit" name="adderess_input"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>کد پستی</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="zip_code_input">
+       <property name="maxLength">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>تاریخ ثبت</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCalendarWidget" name="created_date_input">
+       <property name="locale">
+        <locale language="Persian" country="Iran"/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

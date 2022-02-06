@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>981</width>
+     <height>581</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>بوک مارک ها</string>
+      </property>
+      <widget class="QTableWidget" name="bookmark_list">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>80</y>
+         <width>961</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <column>
+        <property name="text">
+         <string>شناسه</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>مشتری</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تعداد</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>فرم</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>رنگ ها</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>قیمت نهایی</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>کد پستی</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تاریخ تحویل</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تاریخ ثبت</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تاریخ پرداخت</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>وضعیت پرداخت</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>670</x>
+         <y>40</y>
+         <width>301</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="add_bookmark_btn">
+          <property name="text">
+           <string>اضافه کردن</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="delete_bookmark_btn">
+          <property name="text">
+           <string>حذف</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cancel_bookmark_btn">
+          <property name="text">
+           <string>لغو</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="horizontalLayoutWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>254</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QPushButton" name="home_btn">
+          <property name="text">
+           <string>صفحه اصلی</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="close_btn">
+          <property name="text">
+           <string>خروج</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="title">
+       <string>تابلو ها</string>
+      </property>
+      <widget class="QTableWidget" name="tableWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>70</y>
+         <width>961</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <column>
+        <property name="text">
+         <string>شناسه</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>کد پستی</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>وضعیت پرداخت</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>مشتری</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تعداد</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>قیمت نهایی</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>سایز</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>زمان</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>لوگو</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>قاب</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QWidget" name="horizontalLayoutWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>670</x>
+         <y>30</y>
+         <width>301</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="add_board_btn">
+          <property name="text">
+           <string>اضافه کردن</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="delete_board_btn">
+          <property name="text">
+           <string>حذف</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="cancel_board_btn">
+          <property name="text">
+           <string>لغو</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

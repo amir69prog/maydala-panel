@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -23,7 +26,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Add Persons</string>
+    <string>اضافه کردن مشتری</string>
    </property>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
@@ -38,21 +41,21 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>First Name</string>
+        <string>نام</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Last Name</string>
+        <string>نام خانوادگی</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Phone Number</string>
+        <string>شماره همراه</string>
        </property>
       </widget>
      </item>
@@ -80,7 +83,7 @@
      <item row="3" column="0">
       <widget class="QPushButton" name="add_person_btn">
        <property name="text">
-        <string>Add</string>
+        <string>اضافه کردن</string>
        </property>
       </widget>
      </item>
@@ -97,7 +100,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>List Persons</string>
+    <string>لیست مشتریان</string>
    </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
@@ -131,22 +134,22 @@
        </attribute>
        <column>
         <property name="text">
-         <string>id</string>
+         <string>شناسه</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>First_name</string>
+         <string>نام</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Last_name</string>
+         <string>نام خانوادگی</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Phone_number</string>
+         <string>شماره همراه</string>
         </property>
        </column>
       </widget>
@@ -158,20 +161,20 @@
    <property name="geometry">
     <rect>
      <x>480</x>
-     <y>10</y>
-     <width>311</width>
-     <height>81</height>
+     <y>30</y>
+     <width>301</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="title">
-    <string>Actions</string>
+    <string/>
    </property>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>30</y>
-      <width>291</width>
+      <y>20</y>
+      <width>281</width>
       <height>41</height>
      </rect>
     </property>
@@ -179,21 +182,21 @@
      <item>
       <widget class="QPushButton" name="home_btn">
        <property name="text">
-        <string>Home</string>
+        <string>صفحه اصلی</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="back_btn">
        <property name="text">
-        <string>Back</string>
+        <string>برگشت</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="close_btn">
        <property name="text">
-        <string>Close</string>
+        <string>خروج</string>
        </property>
       </widget>
      </item>

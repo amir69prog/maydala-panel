@@ -11,7 +11,40 @@
 
 """
 
+from datetime import datetime
+from typing import List
+
 from core.models import *
+
+def get_full_name_person(person: Person) -> str:
+    """ Get the Fullname of person """
+    return f'{person.first_name} {person.last_name}'
+
+def get_status_payment(is_paid: bool) -> str:
+    """ Get status of payment bookmark/board """
+    if is_paid:
+        return 'پرداخت شده'
+    return 'پرداخت نشده'
+
+def get_date(date: datetime) -> str:
+    """ Return normal format of date if that exists. otherwise return dashes """
+    if not date:
+        return '-----'
+    return date.strftime('%Y-%m-%d')
+
+def get_colors(colors: List) -> str:
+    """ Return better template for colors items """
+    
+    if colors:
+        return ', '.join([color.color for color in colors])
+    return '-----'
+
+def calculate_final_price_bookmark(session, form_id, count) -> float:
+    """ Calculate final price of bookmark """
+    form = session.query(Form).filter(Form.id == form_id).first()
+    if form:
+        return form.base_price * count
+    return 0.0
 
 ### Add ###
 
@@ -93,6 +126,14 @@ def edit_color(session, color_id, *args, **kwargs):
     color.color = kwargs['color']
     session.commit()
 
+
+def edit_bookmark(session, bookmark_id, *args, **kwargs):
+    """ Edit bookmark """
+    bookmark = session.query(Bookmark).filter(Bookmark.id == bookmark_id).first()
+    for key, value in kwargs.items():
+        setattr(bookmark, key, value)
+    session.commit()
+
 ### End Edit ###
 
 
@@ -114,6 +155,12 @@ def delete_color(session, color_id):
     """Delete color"""
     color = session.query(Color).filter(Color.id == color_id).first()
     session.delete(color)
+    session.commit()
+
+def delete_bookmark(session, bookmark_id):
+    """ Delete bookmark """
+    bookmark = session.query(Bookmark).filter(Bookmark.id == bookmark_id).first()
+    session.delete(bookmark)
     session.commit()
 
 ### End Delete ###

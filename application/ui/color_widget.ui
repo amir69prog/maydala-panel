@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::RightToLeft</enum>
+  </property>
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
@@ -23,7 +26,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Form</string>
+    <string>ویرایش رنگ</string>
    </property>
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
@@ -44,7 +47,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Color</string>
+        <string>رنگ</string>
        </property>
       </widget>
      </item>
@@ -58,14 +61,14 @@
      <item row="1" column="0">
       <widget class="QPushButton" name="cancel_edit_btn">
        <property name="text">
-        <string>Cancel</string>
+        <string>لغو</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QPushButton" name="edit_btn">
        <property name="text">
-        <string>Edit</string>
+        <string>ویرایش</string>
        </property>
       </widget>
      </item>
