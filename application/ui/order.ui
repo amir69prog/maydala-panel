@@ -165,7 +165,7 @@
       <property name="title">
        <string>تابلو ها</string>
       </property>
-      <widget class="QTableWidget" name="tableWidget_2">
+      <widget class="QTableWidget" name="board_list">
        <property name="geometry">
         <rect>
          <x>8</x>
@@ -184,27 +184,12 @@
        </column>
        <column>
         <property name="text">
-         <string>کد پستی</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>وضعیت پرداخت</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
          <string>مشتری</string>
         </property>
        </column>
        <column>
         <property name="text">
          <string>تعداد</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>قیمت نهایی</string>
         </property>
        </column>
        <column>
@@ -219,12 +204,52 @@
        </column>
        <column>
         <property name="text">
+         <string>قیمت نهایی</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
          <string>لوگو</string>
         </property>
        </column>
        <column>
         <property name="text">
+         <string>قیمت لوگو</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
          <string>قاب</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>قیمت قاب</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>کد پستی</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>وضعیت پرداخت</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تاریخ ثبت</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تاریخ تحویل</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>تاریخ پرداخت</string>
         </property>
        </column>
       </widget>
@@ -271,7 +296,7 @@
   <tabstop>add_bookmark_btn</tabstop>
   <tabstop>delete_bookmark_btn</tabstop>
   <tabstop>cancel_bookmark_btn</tabstop>
-  <tabstop>tableWidget_2</tabstop>
+  <tabstop>board_list</tabstop>
   <tabstop>add_board_btn</tabstop>
   <tabstop>delete_board_btn</tabstop>
   <tabstop>cancel_board_btn</tabstop>

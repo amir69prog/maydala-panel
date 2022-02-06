@@ -11,7 +11,7 @@
 
 """
 
-from datetime import datetime
+from datetime import datetime, time
 from typing import List
 
 from core.models import *
@@ -44,7 +44,31 @@ def calculate_final_price_bookmark(session, form_id, count) -> float:
     form = session.query(Form).filter(Form.id == form_id).first()
     if form:
         return form.base_price * count
-    return 0.0
+    return 0
+
+def get_size_board(board: Board):
+    """ Get size of board """
+    return f'{board.width_size}x{board.height_size}'
+
+def get_has_logo_board(has_logo: bool) -> str:
+    """ Get has logo of board """
+    if has_logo:
+        return 'دارد'
+    return 'ندارد'
+
+def get_has_panel_board(has_panel: bool) -> str:
+    """ Get has panel of board """
+    if has_panel:
+        return 'دارد'
+    return 'ندارد'
+
+def get_time_board(time: time) -> str:
+    """ Get time of board """
+    return time.strftime('%H:%M')
+
+def get_price(price: float) -> str:
+    price = int(price)
+    return f'{price:,}'
 
 ### Add ###
 
@@ -126,13 +150,19 @@ def edit_color(session, color_id, *args, **kwargs):
     color.color = kwargs['color']
     session.commit()
 
-
 def edit_bookmark(session, bookmark_id, *args, **kwargs):
     """ Edit bookmark """
     bookmark = session.query(Bookmark).filter(Bookmark.id == bookmark_id).first()
     for key, value in kwargs.items():
         setattr(bookmark, key, value)
     session.commit()
+
+def edit_board(session, board_id, *args, **kwargs):
+    """ Edit Board """
+    board = session.query(Board).filter(Board.id == board_id).first()
+    for key, value in kwargs.items():
+        setattr(board, key, value)
+    session.commit() 
 
 ### End Edit ###
 
@@ -161,6 +191,12 @@ def delete_bookmark(session, bookmark_id):
     """ Delete bookmark """
     bookmark = session.query(Bookmark).filter(Bookmark.id == bookmark_id).first()
     session.delete(bookmark)
+    session.commit()
+
+def delete_board(session, board_id):
+    """ Delete board """
+    board = session.query(Board).filter(Board.id == board_id).first()
+    session.delete(board)
     session.commit()
 
 ### End Delete ###

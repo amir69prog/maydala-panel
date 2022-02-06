@@ -93,9 +93,11 @@ class Board(Base):
     width_size = Column(Integer)
     height_size = Column(Integer)
     base_time_price = Column(Float, default=50.00)
-    time = Column(Float)
+    time = Column(Time)
     has_panel = Column(Boolean)
     has_logo = Column(Boolean)
+    logo_price = Column(Float, default=0.00)
+    panel_price = Column(Float, default=0.00)
     description = Column(Text)
 
     def __repr__(self) -> str:

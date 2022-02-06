@@ -5,7 +5,7 @@ from typing import Dict, List
 
 from PyQt5.QtWidgets import QWidget, QApplication, QStackedLayout, QTableWidgetItem, QListWidgetItem
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import Qt, QDate
+from PyQt5.QtCore import Qt, QDate, QTime
 
 from core.models import *
 from core import query 
@@ -35,9 +35,10 @@ def validete_form(form_data, non_required: List = None):
     """ Validate Form """
     for key, value in form_data.items():
         if non_required:
-            if key in non_required:
+            if (not value or value == '') and key in non_required:
                 continue
         if not value:
+            print(f'{key, value} is empty')
             return False
     return True
 
@@ -126,12 +127,14 @@ class PersonWidget(QWidget):
             self.cancel_save_btn.setEnabled(False)
             person_page.update_person_table()
             add_bookmark_page.update_person_combo()
+            add_board_page.update_person_combo()
 
     def delete_person(self):
         """ Delete Person """
         utils.delete_person(session, self.person.person_id)
         person_page.update_person_table()
         add_bookmark_page.update_person_combo()
+        add_board_page.update_person_combo()
         go_to_page(person_page)
 
 
@@ -189,6 +192,7 @@ class PersonPage(QWidget):
             self.phone_number_input.clear()
             self.update_person_table()
             add_bookmark_page.update_person_combo()
+            add_board_page.update_person_combo()
     
     def detail_person_page(self, item):
         """ Go to detail person page """
@@ -432,6 +436,12 @@ class OrderPage(QWidget):
         self.cancel_bookmark_btn.clicked.connect(self.init_bookmark_ui)
         self.bookmark_list.itemClicked.connect(self.going_to_delete_bookmark)
         self.bookmark_list.itemDoubleClicked.connect(self.edit_bookmark_widget)
+
+        self.add_board_btn.clicked.connect(lambda: go_to_page(add_board_page))
+        self.delete_board_btn.clicked.connect(self.delete_board)
+        self.cancel_board_btn.clicked.connect(self.init_board_ui)
+        self.board_list.itemClicked.connect(self.going_to_delete_board)
+        self.board_list.itemDoubleClicked.connect(self.edit_board_widget)
     
     def settings(self):
         """ Settings """
@@ -458,7 +468,7 @@ class OrderPage(QWidget):
             self.bookmark_list.setItem(row_count, 2, QTableWidgetItem(str(bookmark.count)))
             self.bookmark_list.setItem(row_count, 3, QTableWidgetItem(bookmark.form.title))
             self.bookmark_list.setItem(row_count, 4, QTableWidgetItem(utils.get_colors(bookmark.colors)))
-            self.bookmark_list.setItem(row_count, 5, QTableWidgetItem(str(bookmark.final_price)))
+            self.bookmark_list.setItem(row_count, 5, QTableWidgetItem(utils.get_price(bookmark.final_price)))
             self.bookmark_list.setItem(row_count, 6, QTableWidgetItem(bookmark.zip_code))
             self.bookmark_list.setItem(row_count, 7, QTableWidgetItem(utils.get_date(bookmark.delivery_date)))
             self.bookmark_list.setItem(row_count, 8, QTableWidgetItem(utils.get_date(bookmark.created_date)))
@@ -487,6 +497,54 @@ class OrderPage(QWidget):
 
     def init_board_ui(self):
         """ Initialize Board UI """ 
+        self.update_board_list()
+        self.delete_board_btn.setEnabled(False)
+        self.cancel_board_btn.setEnabled(False)
+    
+    def update_board_list(self):
+        """ Update board list (table) """
+        self.board_list.setRowCount(0)
+        boards = query.query_all_board(session)
+        row_count = self.board_list.rowCount()
+        for board in boards:
+            self.board_list.insertRow(row_count)
+            item_id = QTableWidgetItem(str(board.id))
+            item_id.setFlags(Qt.ItemIsEnabled)
+            self.board_list.setItem(row_count, 0, item_id)
+            self.board_list.setItem(row_count, 1, QTableWidgetItem(utils.get_full_name_person(board.person)))
+            self.board_list.setItem(row_count, 2, QTableWidgetItem(str(board.count)))
+            self.board_list.setItem(row_count, 3, QTableWidgetItem(utils.get_size_board(board)))
+            self.board_list.setItem(row_count, 4, QTableWidgetItem(utils.get_time_board(board.time)))
+            self.board_list.setItem(row_count, 5, QTableWidgetItem(utils.get_price(board.final_price)))
+            self.board_list.setItem(row_count, 6, QTableWidgetItem(utils.get_has_logo_board(board.has_logo)))
+            self.board_list.setItem(row_count, 7, QTableWidgetItem(utils.get_price(board.logo_price)))
+            self.board_list.setItem(row_count, 8, QTableWidgetItem(utils.get_has_panel_board(board.has_panel)))
+            self.board_list.setItem(row_count, 9, QTableWidgetItem(utils.get_price(board.panel_price)))
+            self.board_list.setItem(row_count, 10, QTableWidgetItem(board.zip_code))
+            self.board_list.setItem(row_count, 11, QTableWidgetItem(utils.get_status_payment(board.is_paid)))
+            self.board_list.setItem(row_count, 12, QTableWidgetItem(utils.get_date(board.created_date)))
+            self.board_list.setItem(row_count, 13, QTableWidgetItem(utils.get_date(board.delivery_date)))
+            self.board_list.setItem(row_count, 14, QTableWidgetItem(utils.get_date(board.date_paid)))
+            row_count += 1
+
+    def delete_board(self):
+        """ Deleting board """
+        board_id = self.board_list.item(self.board_list.currentRow(), 0).text()
+        utils.delete_board(session, board_id)
+        self.init_board_ui()
+
+    def going_to_delete_board(self):
+        """ Going to delete board """
+        self.delete_board_btn.setEnabled(True)        
+        self.cancel_board_btn.setEnabled(True)
+
+    def edit_board_widget(self):
+        """ Edit board widget """
+        board_id = self.board_list.item(self.board_list.currentRow(), 0).text()
+        board = query.query_board_by_id(session, board_id)
+        board_widget = BoardWidget(board)
+        stacked_layout.addWidget(board_widget)
+        stacked_layout.setCurrentWidget(board_widget)
 
 
 class AddBookmarkPage(QWidget):
@@ -505,7 +563,7 @@ class AddBookmarkPage(QWidget):
     
     def settings(self):
         """ Settings """
-        self.setFixedSize(800,500)
+        self.setFixedSize(1000,500)
         self.setWindowTitle('Add Bookmark')
     
     def init_ui(self):
@@ -544,7 +602,7 @@ class AddBookmarkPage(QWidget):
         form_id = self.form_input.currentData()
         count = self.count_input.value()
         final_price = utils.calculate_final_price_bookmark(session, form_id, count)
-        self.final_price_input.setValue(final_price)
+        self.final_price_input.setValue(int(final_price))
     
     def set_current_date(self):
         """ Set current date """
@@ -584,7 +642,7 @@ class AddBookmarkPage(QWidget):
             self.form_input.setCurrentIndex(0)
             self.colors_input.clearSelection()
             self.count_input.setValue(1)
-            self.final_price_input.setValue(0.0)
+            self.final_price_input.setValue(0)
             self.is_paid_input.setChecked(False)
             self.set_current_date()
             self.adderess_input.clear()
@@ -611,7 +669,7 @@ class BookmarkWidget(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(800,500)
-        self.setWindowTitle('Edit Bookmark')
+        self.setWindowTitle('Bookmark {}'.format(self.bookmark.id))
     
     def init_ui(self):
         """ Initialize UI """
@@ -698,7 +756,286 @@ class BookmarkWidget(QWidget):
         if is_valid:
             utils.edit_bookmark(session, self.bookmark.id, **data)
             order_page.update_bookmark_list()
+            go_to_page(order_page)
 
+
+class AddBoardPage(QWidget):
+
+    def __init__(self) -> None:
+        super().__init__()
+        loadUi(APP_DIR / 'ui/add_board.ui', self)
+        self.settings()
+        self.init_ui()
+
+    def settings(self):
+        """ Settings """
+        self.setFixedSize(1000,500)
+        self.setWindowTitle('Add Board')
+
+        # Signals
+        self.add_btn.clicked.connect(self.add_board)
+        self.cancel_btn.clicked.connect(lambda :go_to_page(order_page))
+        self.has_logo_input.stateChanged.connect(self.toggle_logo_input)
+        self.has_panel_input.stateChanged.connect(self.toggle_panel_input)
+        self.time_input.timeChanged.connect(self.calculate_final_price)
+        self.base_time_price_input.valueChanged.connect(self.calculate_final_price)
+        self.count_input.valueChanged.connect(self.calculate_final_price)
+        self.logo_price_input.valueChanged.connect(self.calculate_final_price)
+        self.panel_price_input.valueChanged.connect(self.calculate_final_price)
+    
+    def init_ui(self):
+        """ Initialize UI """
+        self.update_person_combo()
+        self.calculate_final_price()
+        self.logo_price_input.setEnabled(False)
+        self.panel_price_input.setEnabled(False)
+    
+    def update_person_combo(self):
+        """ Update person combo """
+        self.person_input.clear()
+        perons = query.query_all_person(session)
+        for person in perons:
+            self.person_input.addItem(utils.get_full_name_person(person), userData=person.person_id)
+
+    def toggle_logo_input(self, state):
+        """ Toggle logo input """
+        if state == Qt.Checked:
+            self.logo_price_input.setEnabled(True)
+        else:
+            self.logo_price_input.setValue(0)
+            self.logo_price_input.setEnabled(False)
+        
+    def toggle_panel_input(self, state):
+        """ Toggle panel input """
+        if state == Qt.Checked:
+            self.panel_price_input.setEnabled(True)
+        else:
+            self.panel_price_input.setValue(0)
+            self.panel_price_input.setEnabled(False)
+
+    def calculate_final_price(self):
+        """ Calculate final price """
+        time = self.time_input.time().toPyTime().hour
+        base_time_price = self.base_time_price_input.value()
+        count = self.count_input.value()
+        final_price = time * base_time_price * count
+        has_logo = self.has_logo_input.isChecked()
+        if has_logo:
+            logo_price = self.logo_price_input.value()
+            final_price += logo_price
+        has_panel = self.has_panel_input.isChecked()
+        if has_panel:
+            panel_price = self.panel_price_input.value()
+            final_price += panel_price
+        
+        self.final_price_input.setValue(final_price)
+    
+    def add_board(self):
+        """ Add Board """
+        person_id = self.person_input.currentData()
+        width = self.width_size_input.value()
+        height = self.height_size_input.value()
+        count = self.count_input.value()
+        time = self.time_input.time().toPyTime()
+        base_time_price = self.base_time_price_input.value()
+        final_price = self.final_price_input.value()
+        has_logo = self.has_logo_input.isChecked()
+        has_panel = self.has_panel_input.isChecked()
+        logo_price = self.logo_price_input.value()
+        panel_price = self.panel_price_input.value()
+        adderess = self.adderess_input.toPlainText()
+        zip_code = self.zip_code_input.text()
+        description = self.description_input.toPlainText()
+        created_date = self.created_date_input.selectedDate().toPyDate()
+        is_paid = False
+        date_paid = None
+        delivery_date = None
+        data = {
+            'person_id': person_id,
+            'width_size': width,
+            'height_size': height,
+            'count': count,
+            'time': time,
+            'base_time_price': base_time_price,
+            'final_price': final_price,
+            'has_logo': has_logo,
+            'has_panel': has_panel,
+            'logo_price': logo_price,
+            'panel_price': panel_price,
+            'adderess': adderess.strip(),
+            'zip_code': zip_code.strip(),
+            'description': description.strip(),
+            'created_date': created_date,
+            'is_paid': is_paid,
+            'date_paid': date_paid,
+            'delivery_date': delivery_date,
+        }
+        non_required = ['is_paid', 'date_paid', 'delivery_date', 'description', 'has_logo', 'has_panel']
+        if not has_logo:
+            non_required.append('logo_price')
+        if not has_panel:
+            non_required.append('panel_price')
+
+        is_valid = validete_form(data, non_required=non_required)
+        if is_valid:
+            utils.add_board(session, **data)
+            order_page.update_board_list()
+            go_to_page(order_page)
+
+
+class BoardWidget(QWidget):
+
+    def __init__(self, board: Board) -> None:
+        super().__init__()
+        loadUi(APP_DIR / 'ui/board_widget.ui', self)
+        self.board = board
+        self.settings()
+        self.init_ui()
+
+        # Signals
+        self.cancel_btn.clicked.connect(lambda :go_to_page(order_page))
+        self.edit_btn.clicked.connect(self.edit_board)
+        self.has_logo_input.stateChanged.connect(self.toggle_logo_input)
+        self.has_panel_input.stateChanged.connect(self.toggle_panel_input)
+        self.time_input.timeChanged.connect(self.calculate_final_price)
+        self.base_time_price_input.valueChanged.connect(self.calculate_final_price)
+        self.count_input.valueChanged.connect(self.calculate_final_price)
+        self.logo_price_input.valueChanged.connect(self.calculate_final_price)
+        self.panel_price_input.valueChanged.connect(self.calculate_final_price)
+
+    def settings(self):
+        """ Settings """
+        self.setFixedSize(1000,500)
+        self.setWindowTitle('Board {}'.format(self.board.id))
+    
+    def init_ui(self):
+        """ Initializer UI """
+        self.update_person_combo()
+        if not self.board.has_logo:
+            self.logo_price_input.setEnabled(False)
+        else:
+            self.logo_price_input.setEnabled(True)
+
+        if not self.board.has_panel:
+            self.panel_price_input.setEnabled(False)
+        else:
+            self.panel_price_input.setEnabled(True)
+
+        self.person_input.setCurrentIndex(self.person_input.findData(self.board.person_id))
+        self.width_size_input.setValue(self.board.width_size)
+        self.height_size_input.setValue(self.board.height_size)
+        self.count_input.setValue(self.board.count)
+        self.time_input.setTime(QTime(self.board.time.hour, self.board.time.minute))
+        self.base_time_price_input.setValue(int(self.board.base_time_price))
+        self.final_price_input.setValue(int(self.board.final_price))
+        self.has_logo_input.setChecked(self.board.has_logo)
+        self.has_panel_input.setChecked(self.board.has_panel)
+        self.logo_price_input.setValue(int(self.board.logo_price))
+        self.panel_price_input.setValue(int(self.board.panel_price))
+        self.adderess_input.setPlainText(self.board.adderess)
+        self.zip_code_input.setText(self.board.zip_code)
+        self.description_input.setPlainText(self.board.description)
+        self.created_date_input.setSelectedDate(self.board.created_date)
+        self.is_paid_input.setChecked(self.board.is_paid)
+        if self.board.date_paid:
+            self.date_paid_input.setDate(self.board.date_paid)
+        if self.board.delivery_date:
+            self.delivery_date_input.setDate(self.board.delivery_date)
+
+    def update_person_combo(self):
+        """ Update person combo """
+        self.person_input.clear()
+        perons = query.query_all_person(session)
+        for person in perons:
+            self.person_input.addItem(utils.get_full_name_person(person), userData=person.person_id)
+
+    def edit_board(self):
+        """ Edit board """
+        person_id = self.person_input.currentData()
+        width = self.width_size_input.value()
+        height = self.height_size_input.value()
+        count = self.count_input.value()
+        time = self.time_input.time().toPyTime()
+        base_time_price = self.base_time_price_input.value()
+        final_price = self.final_price_input.value()
+        has_logo = self.has_logo_input.isChecked()
+        has_panel = self.has_panel_input.isChecked()
+        logo_price = self.logo_price_input.value()
+        panel_price = self.panel_price_input.value()
+        adderess = self.adderess_input.toPlainText()
+        zip_code = self.zip_code_input.text()
+        description = self.description_input.toPlainText()
+        created_date = self.created_date_input.selectedDate().toPyDate()
+        is_paid = self.is_paid_input.isChecked()
+        date_paid = self.date_paid_input.date().toPyDate()
+        delivery_date = self.delivery_date_input.date().toPyDate()
+        data = {
+            'person_id': person_id,
+            'width_size': width,
+            'height_size': height,
+            'count': count,
+            'time': time,
+            'base_time_price': base_time_price,
+            'final_price': final_price,
+            'has_logo': has_logo,
+            'has_panel': has_panel,
+            'logo_price': logo_price,
+            'panel_price': panel_price,
+            'adderess': adderess.strip(),
+            'zip_code': zip_code.strip(),
+            'description': description.strip(),
+            'created_date': created_date,
+            'is_paid': is_paid,
+            'date_paid': date_paid,
+            'delivery_date': delivery_date,
+        }
+        non_required = ['is_paid', 'has_logo', 'has_panel', 'description']
+        if not has_logo:
+            non_required.append('logo_price')
+        if not has_panel:
+            non_required.append('panel_price')
+
+        is_valid = validete_form(data, non_required=non_required)
+        if is_valid:
+            utils.edit_board(session, self.board.id, **data)
+            order_page.update_board_list()
+            go_to_page(order_page)
+
+    def toggle_logo_input(self, state):
+        """ Toggle logo input """
+        if state == Qt.Checked:
+            self.logo_price_input.setEnabled(True)
+            self.logo_price_input.setValue(int(self.board.logo_price))
+
+        else:
+            self.logo_price_input.setValue(0)
+            self.logo_price_input.setEnabled(False)
+        
+    def toggle_panel_input(self, state):
+        """ Toggle panel input """
+        if state == Qt.Checked:
+            self.panel_price_input.setEnabled(True)
+            self.panel_price_input.setValue(int(self.board.panel_price))
+        else:
+            self.panel_price_input.setValue(0)
+            self.panel_price_input.setEnabled(False)
+
+    def calculate_final_price(self):
+        """ Calculate final price """
+        time = self.time_input.time().toPyTime().hour
+        base_time_price = self.base_time_price_input.value()
+        count = self.count_input.value()
+        final_price = time * base_time_price * count
+        has_logo = self.has_logo_input.isChecked()
+        if has_logo:
+            logo_price = self.logo_price_input.value()
+            final_price += logo_price
+        has_panel = self.has_panel_input.isChecked()
+        if has_panel:
+            panel_price = self.panel_price_input.value()
+            final_price += panel_price
+        
+        self.final_price_input.setValue(final_price)
 
 ### End Pages ###
 
@@ -713,6 +1050,7 @@ if __name__ == '__main__':
     settings_page = SettingsPage()
     order_page = OrderPage()
     add_bookmark_page = AddBookmarkPage()
+    add_board_page = AddBoardPage()
 
     stacked_layout = QStackedLayout()
     stacked_layout.addWidget(home_page)
@@ -720,6 +1058,7 @@ if __name__ == '__main__':
     stacked_layout.addWidget(settings_page)
     stacked_layout.addWidget(order_page)
     stacked_layout.addWidget(add_bookmark_page)
+    stacked_layout.addWidget(add_board_page)
 
     app.exec()
 
