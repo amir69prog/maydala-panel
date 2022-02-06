@@ -62,7 +62,7 @@ class HomePage(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(800,500)
-        self.setWindowTitle(f'Home Page')
+        self.setWindowTitle(f'صفحه اصلی')
 
 
 
@@ -86,7 +86,7 @@ class PersonWidget(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(800,500)
-        self.setWindowTitle(f'Person: {self.person.first_name} {self.person.last_name}')
+        self.setWindowTitle(f'مشتری: {self.person.first_name} {self.person.last_name}')
 
     def init_ui(self):
         """ Initialize UI """
@@ -155,7 +155,7 @@ class PersonPage(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(800,500)
-        self.setWindowTitle('Person')
+        self.setWindowTitle('مشتریان')
 
     def init_ui(self):
         """ Initialize UI """
@@ -219,7 +219,7 @@ class FormWidget(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(332,145)
-        self.setWindowTitle(f'Form: {self.form.title}')
+        self.setWindowTitle(f'فرم: {self.form.title}')
     
     def init_ui(self):
         """ Initialize UI """
@@ -258,7 +258,7 @@ class ColorWidget(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(332,145)
-        self.setWindowTitle(f'Color: {self.color.color}')
+        self.setWindowTitle(f'رنگ: {self.color.color}')
     
     def init_ui(self):
         """ Initialize UI """
@@ -318,7 +318,7 @@ class SettingsPage(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(800,500)
-        self.setWindowTitle('Settings')
+        self.setWindowTitle('تنظیمات')
     
     def update_form_table(self):
         """ Update form table """
@@ -446,7 +446,7 @@ class OrderPage(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(1000,600)
-        self.setWindowTitle('Order')
+        self.setWindowTitle('سفارشات')
 
     def init_bookmark_ui(self):
         """ Initialize Bookmark UI """ 
@@ -564,7 +564,7 @@ class AddBookmarkPage(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(1000,500)
-        self.setWindowTitle('Add Bookmark')
+        self.setWindowTitle('سفارش بوکمارک')
     
     def init_ui(self):
         """ Initialize UI """
@@ -669,7 +669,7 @@ class BookmarkWidget(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(800,500)
-        self.setWindowTitle('Bookmark {}'.format(self.bookmark.id))
+        self.setWindowTitle('بوکمارک {}'.format(utils.get_full_name_person(self.bookmark.person)))
     
     def init_ui(self):
         """ Initialize UI """
@@ -770,7 +770,7 @@ class AddBoardPage(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(1000,500)
-        self.setWindowTitle('Add Board')
+        self.setWindowTitle('سفارش تابلو')
 
         # Signals
         self.add_btn.clicked.connect(self.add_board)
@@ -906,7 +906,7 @@ class BoardWidget(QWidget):
     def settings(self):
         """ Settings """
         self.setFixedSize(1000,500)
-        self.setWindowTitle('Board {}'.format(self.board.id))
+        self.setWindowTitle('تابلو {}'.format(utils.get_full_name_person(self.board.person)))
     
     def init_ui(self):
         """ Initializer UI """
@@ -1063,3 +1063,4 @@ if __name__ == '__main__':
     app.exec()
 
 ### End Run ###
+
